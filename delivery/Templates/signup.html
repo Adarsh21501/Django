@@ -1,33 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>Sign Up</title>
+    {% load static %}
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ================= BACKGROUND SLIDER ================= */
+        .bg-slider {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .bg-slider img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            animation: slide 15s infinite;
+        }
+
+
+
     
-    <title>Sign UP</title>
-        {% load static %}
-    <link rel="stylesheet" href="{% static 'style.css' %}">
+        .bg-slider img:nth-child(1) { animation-delay: 0s; }
+        .bg-slider img:nth-child(2) { animation-delay: 5s; }
+        .bg-slider img:nth-child(3) { animation-delay: 10s; }
+
+        @keyframes slide {
+            0% { opacity: 0; }
+            10% { opacity: 1; }
+            30% { opacity: 1; }
+            40% { opacity: 0; }
+            100% { opacity: 0; }
+        }
+
+        /* ================= OVERLAY ================= */
+        .overlay {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+
+        /* ================= CONTAINER ================= */
+        .container {
+            position: relative;
+            width: 400px;
+            margin: auto;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #fff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2874f0;
+        }
+
+        /* ================= INPUT ================= */
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            outline: none;
+        }
+
+        textarea {
+            resize: none;
+            height: 70px;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #2874f0;
+            box-shadow: 0 0 5px rgba(40,116,240,0.3);
+        }
+
+        /* ================= PASSWORD ================= */
+        .password-box {
+            position: relative;
+        }
+
+     
+
+        /* ================= BUTTON ================= */
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #fb641b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #e85c16;
+        }
+
+        /* ================= LINK ================= */
+        .signin-link {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .signin-link a {
+            color: #2874f0;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .signin-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media(max-width:480px){
+            .container{
+                width:90%;
+            }
+        }
+    </style>
 </head>
+
 <body>
-    <h3>SIGN UP below:</h3>
+
+<!-- 🔥 Background Images -->
+<div class="bg-slider">
+    <img src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da">
+    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d">
+    <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f">
+</div>
+
+<div class="overlay"></div>
+
+<!-- 🔥 Form -->
+<div class="container">
+    <h3>Create Account</h3>
 
     <form action="{% url 'signup' %}" method="post">
         {% csrf_token %}
-        <label>Username </label>
-        <input type="text" name="username">
-        <br><br>
-        <label>Password </label>
-        <input type="password" name="password">
-        <br><br>
-        <label>Email </label>
-        <input type="email" name="email">
-        <br><br>
-        <label>Mobile </label>
-        <input type="text" name="mobile">
-        <br><br>
-        <label>Address </label>
-        <textarea name="address"></textarea>
-        <br><br>
-        <button type="submit">SIGN UP</button>
+
+        <input type="text" name="username" placeholder="Username" required>
+
+        <div class="password-box">
+            <input type="password" id="pass" name="password" placeholder="Password" required>
+        </div>
+
+        <input type="email" name="email" placeholder="Email" required>
+
+        <input type="text" name="mobile" placeholder="Mobile number" required>
+
+        <textarea name="address" placeholder="Address"></textarea>
+
+        <button type="submit">Create Account</button>
+
+        <p class="signin-link">
+            Already have an account?
+            <a href="/open_signin">Sign In</a>
+        </p>
     </form>
+</div>
+
+
 
 </body>
 </html>

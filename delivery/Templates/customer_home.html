@@ -3,38 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Page</title>
-</head>
-<body>
-    <h3>Welcome {{username}}!</h3>
+    <title>Restaurants</title>
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Restaurant name</th>
-                <th>Picture</th>
-                <th>Cuisine</th>
-                <th>Rating</th>
-                <th>Operations</th>
-            </tr>
-        </thead>
-        <tbody>
-            {%  for r in restaurantList %}
-                <tr>
-                    <td>{{ r.name }}</td>
-                    <td>
-                        <img src="{{ r.picture }}">
-                    </td>
-                    <td>{{ r.cuisine }}</td>
-                    <td>{{ r.rating }}</td>
-                    <td>
-                        <a href="{% url 'view_menu' r.id username %}">
-                            View Menu
-                        </a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: "";
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: url("https://images.unsplash.com/photo-1504674900247-0877df9cc836") no-repeat center/cover;
+            z-index: -1;
+            animation: zoom 20s infinite alternate;
+            filter: brightness(0.7);
+        }
+
+        @keyframes zoom {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(90deg, #141e30, #243b55);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .title {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .welcome {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        /* Container */
+        .container {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        /* Card */
+        .card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+        }
+
+        .card img {
+            width: 100%;
+            height: 170px;
+            object-fit: cover;
+        }
+
+        .card-body {
+            padding: 15px;
+        }
+
+        .name {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .cuisine {
+            color: gray;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        /* Rating */
+        .rating-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .rating-number {
+            background: #2e7d32;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .stars {
+            color: gold;
+            font-size: 16px;
+        }
+
+        /* Button */
+        .view-btn {
+            display: block;
+            text-align: center;
+            background: #ff9800;
+            color: white;
+            padding: 8px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .view-btn:hover {
+            background: #f57c00;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="title">🍽 Restaurant Explorer</div>
+        <div class="welcome">
+            {{ request.user.username }} 👋 Welcome
+        </div>
+    </div>
+
+    <!-- Cards -->
+    <div class="container">
+        {% for r in restaurantList %}
+        <div class="card">
+
+            <img src="{{ r.picture }}" alt="Restaurant">
+
+            <div class="card-body">
+                <div class="name">{{ r.name }}</div>
+                <div class="cuisine">{{ r.cuisine }}</div>
+
+                <div class="rating-row">
+                    <div class="rating-number">{{ r.rating }}</div>
+
+                    <div class="stars">
+                        {% for i in "12345" %}
+                            {% if forloop.counter <= r.rating %}
+                                ★
+                            {% else %}
+                                ☆
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <a href="{% url 'open_update_menu' r.id %}" class="view-btn">
+                    View Menu
+                </a>
+            </div>
+
+        </div>
+        {% endfor %}
+    </div>
+
 </body>
 </html>

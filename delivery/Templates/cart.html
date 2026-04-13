@@ -3,36 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Cart</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            background: linear-gradient(to right, #eef2f3, #dfe9f3);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(90deg, #141e30, #243b55);
+            color: white;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .title {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .user {
+            font-size: 16px;
+        }
+
+        /* Container */
+        .container {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        /* Cart Items */
+        .items {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .card {
+            display: flex;
+            gap: 15px;
+            background: white;
+            border-radius: 12px;
+            padding: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .card img {
+            width: 100px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .details {
+            flex: 1;
+        }
+
+        .name {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .desc {
+            font-size: 14px;
+            color: gray;
+        }
+
+        .price {
+            font-size: 16px;
+            font-weight: bold;
+            color: #16a34a;
+            margin-top: 5px;
+        }
+
+        /* Summary Box */
+        .summary {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            height: fit-content;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .summary h2 {
+            margin-top: 0;
+        }
+
+        .total {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .checkout-btn {
+            display: block;
+            text-align: center;
+            background: linear-gradient(45deg, #ff9800, #f57c00);
+            color: white;
+            padding: 12px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .checkout-btn:hover {
+            transform: scale(1.03);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
+
 <body>
-    Hello {{username}}
-    <!-- show current menu -->
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Item Image</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Price</th>
-            </tr>
-        </thead>
-        <tbody>
-            {%  for item in itemList %}
-                <tr>
-                    <td>
-                        <img src="{{ item.picture }}">
-                    </td>
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.description }}</td>
-                    <td>{{ item.price }}</td>
-                </tr>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="title">🛒 Your Cart</div>
+        <div class="user">Hello, {{ username }} 👋</div>
+    </div>
+
+    <!-- Main Layout -->
+    <div class="container">
+
+        <!-- Items -->
+        <div class="items">
+            {% for item in itemList %}
+            <div class="card">
+
+                <img src="{{ item.picture }}" alt="Food">
+
+                <div class="details">
+                    <div class="name">{{ item.name }}</div>
+                    <div class="desc">{{ item.description }}</div>
+                    <div class="price">₹{{ item.price }}</div>
+                </div>
+
+            </div>
             {% endfor %}
-        </tbody>
-        <h2>Total price : {{total_price}}</h2>
-        <form action="{% url 'checkout' username %}">
-            <input type="submit" value="CHECK OUT" />
-        </form>
-    </table>
+        </div>
+
+        <!-- Summary -->
+        <div class="summary">
+            <h2>Order Summary</h2>
+
+            <div class="total">
+                Total: ₹{{ total_price }}
+            </div>
+
+            <a href="{% url 'checkout' username %}" class="checkout-btn">
+                ✅ Checkout Now
+            </a>
+        </div>
+
+    </div>
+
 </body>
 </html>
